@@ -1,19 +1,29 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../authprovider/Authprovider";
 
 const Register = () => {
+  const navigate = useNavigate()
+    const {usercreator} = useContext(AuthContext)
     const RegisterHandle = e =>{
     e.preventDefault();
      const name = e.target.name.value;
      const email = e.target.email.value;
      const password = e.target.password.value;
      console.log(name,email,password);
+     usercreator(email,password)
+     .then(result=>{
+      console.log(result)
+      e.target.reset();
+      navigate('/login');
+     })
+     .catch(error=>{console.log("ERROR",error.message)})
     }
   return (
     <div className="hero bg-base-200 min-h-[500px]">
       <div className="hero-content flex-col ">
         <div className="text-center lg:text-left">
-          <h1 className="text-3xl font-bold">Login now!</h1>
+          <h1 className="text-3xl font-bold">Registration Now!</h1>
         </div>
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
           <form onSubmit={RegisterHandle} className="card-body">
